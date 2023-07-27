@@ -13,5 +13,11 @@ pipeline {
                 sh './gradlew test --info -Dselenide.headless=true'
             }
         }
+        stage("Generate Reports") {
+            steps {
+                allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
+            }
+        }
+
     }
 }
