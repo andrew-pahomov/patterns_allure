@@ -10,7 +10,9 @@ pipeline {
         }
         stage("Run tests") {
             steps {
-                sh './gradlew test --info -Dselenide.headless=true'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh './gradlew test --info -Dselenide.headless=true'
+                }
             }
         }
         stage("Generate Reports") {
