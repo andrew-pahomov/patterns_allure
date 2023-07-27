@@ -34,7 +34,7 @@ class CardDeliveryTest {
     }
 
     @Test
-    @DisplayName("Should successful plan meeting")
+    @DisplayName("Should successful plan and replan meeting")
     void shouldSuccessfulPlanMeeting() {
         DataGenerator.UserInfo validUser = DataGenerator.Registration.generateUser("ru");
         int daysToAddForFirstMeeting = 4;
@@ -56,7 +56,7 @@ class CardDeliveryTest {
         $("[data-test-id=date] input").setValue(secondMeetingDate);
         $(byText("Запланировать")).click();
         $("[data-test-id='replan-notification'] .notification__content")
-                .shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"))
+                .shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"), Duration.ofSeconds(15))
                 .shouldBe(visible);
         $("[data-test-id='replan-notification'] button").click();
         $("[data-test-id='success-notification'] .notification__content")
