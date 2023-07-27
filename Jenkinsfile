@@ -10,7 +10,7 @@ pipeline {
         }
         stage("Run tests") {
             steps {
-                sh './gradlew test --info -Dselenide.headless-true'
+                sh './gradlew test --info -Dselenide.headless=true'
             }
         }
     }
