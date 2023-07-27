@@ -5,7 +5,7 @@ pipeline {
         stage("Prepare") {
             steps {
                 sh 'chmod +x gradlew'
-                sh 'java -jar ./artifacts/app-order.jar &'
+                sh 'java -jar ./artifacts/app-card-delivery.jar &'
             }
         }
         stage("Run tests") {
