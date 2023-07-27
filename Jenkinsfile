@@ -1,31 +1,30 @@
 #!groovy
-pipeline {
-    agent any
-    stages {
+node {
+    def build_ok = true
         stage("Prepare") {
-            steps {
-                sh 'chmod +x gradlew'
-                sh 'java -jar ./artifacts/app-card-delivery.jar &'
-            }
+            sh 'chmod +x gradlew'
+            sh 'java -jar ./artifacts/app-card-delivery.jar &'
         }
-        stage("Run tests") {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh './gradlew test --info -Dselenide.headless=true'
-                }
-            }
+    try{
+        stage('Run tests') {
+            sh './gradlew test --info -Dselenide.headless=true'
         }
-        stage("Generate Reports") {
-            steps {
-                allure ([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'build/allure-results']]
-                ])
-            }
-        }
-
+    } catch(e) {
+        build_ok = false
+        echo e.toString()
+    }
+    stage("Generate Reports") {
+          allure ([
+                includeProperties: false,
+                jdk: '',
+                properties: [],
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'build/allure-results']]
+          ])
+    }
+    if(build_ok) {
+        currentBuild.result = "SUCCESS"
+    } else {
+        currentBuild.result = "FAILURE"
     }
 }
