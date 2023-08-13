@@ -3,7 +3,7 @@ node {
     def build_ok = true
         stage("Prepare") {
             sh 'chmod +x gradlew'
-            sh 'java -jar ./artifacts/app-card-delivery.jar'
+            sh 'java -jar ./artifacts/app-card-delivery.jar &'
         }
     try{
         stage('Run tests') {
