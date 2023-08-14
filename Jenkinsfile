@@ -5,6 +5,7 @@ node {
             sh 'chmod +x gradlew'
             sh 'java -jar ./artifacts/app-card-delivery.jar &'
         }
+
     try{
         stage('Run tests') {
             sleep time: 5000, unit: 'MILLISECONDS'
@@ -14,6 +15,7 @@ node {
         build_ok = false
         echo e.toString()
     }
+
     stage("Generate Reports") {
           allure ([
                 includeProperties: false,
@@ -23,9 +25,11 @@ node {
                 results: [[path: 'build/allure-results']]
           ])
     }
+
     if(build_ok) {
         currentBuild.result = "SUCCESS"
     } else {
         currentBuild.result = "FAILURE"
     }
+
 }
