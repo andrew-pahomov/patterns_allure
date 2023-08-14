@@ -7,6 +7,7 @@ node {
         }
     try{
         stage('Run tests') {
+            sleep time: 5000, unit: 'MILLISECONDS'
             sh './gradlew test --info -Dselenide.headless=true'
         }
     } catch(e) {
